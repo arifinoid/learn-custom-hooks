@@ -1,4 +1,9 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useContext } from "react";
+
+import Nav from "../components/Nav";
+
+import { UserContext } from "../context/UserContext";
+import { login } from "../utils/login";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -26,8 +31,11 @@ const Todo = () => {
   });
   const [text, setText] = useState();
 
+  const { user, setUser } = useContext(UserContext);
+
   return (
     <div>
+      <Nav />
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -54,6 +62,21 @@ const Todo = () => {
           </div>
         );
       })}
+
+      <pre>{JSON.stringify(user, null, 2)}</pre>
+
+      {user ? (
+        <button onClick={() => setUser(null)}>logout</button>
+      ) : (
+        <button
+          onClick={async () => {
+            const user = await login();
+            setUser(user);
+          }}
+        >
+          login
+        </button>
+      )}
     </div>
   );
 };

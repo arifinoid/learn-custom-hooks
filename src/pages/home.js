@@ -1,8 +1,11 @@
-import React, { useRef, useState, useCallback } from "react";
-import { useForm } from "../hooks";
+import React, { useRef, useState, useCallback, useContext } from "react";
 
 import Hello from "../components/Hello";
 import Square from "../components/Square";
+import Nav from "../components/Nav";
+
+import { useForm } from "../hooks";
+import { UserContext } from "../context/UserContext";
 
 const Home = () => {
   const [values, handleChange] = useForm({ email: "", password: "" });
@@ -14,8 +17,11 @@ const Home = () => {
   const favNums = [2, 11, 17];
   const increment = useCallback(n => setCount(count => count + n), [setCount]);
 
+  const { user } = useContext(UserContext);
   return (
     <div>
+      <Nav />
+
       <button onClick={() => setShowHello(!showHello)}>toggle</button>
       {showHello && <Hello />}
 
@@ -43,6 +49,7 @@ const Home = () => {
       />
 
       <button onClick={() => inputRef.current.focus()}>focus</button>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
     </div>
   );
 };
