@@ -1,23 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { useForm, useFetch } from "./hooks";
+import React, { useRef, useState, useCallback } from "react";
+import { useForm } from "./hooks";
 
+import Hello from "./components/Hello";
+import Square from "./components/Square";
 import "./App.css";
 
 const App = () => {
   const [values, handleChange] = useForm({ email: "", password: "" });
-  const [count, setCount] = useState(() =>
-    JSON.parse(localStorage.getItem("count"))
-  );
+  const inputRef = useRef();
+  const [showHello, setShowHello] = useState(true);
 
-  const { data } = useFetch(`http://numbersapi.com/${count}/math`);
+  const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    localStorage.setItem("count", JSON.stringify(count));
-  }, [count]);
+  const favNums = [2, 11, 17];
+  const increment = useCallback(n => setCount(count => count + n), [setCount]);
 
   return (
     <div>
-      <div>{!data ? "loading..." : data}</div>
+      <button onClick={() => setShowHello(!showHello)}>toggle</button>
+      {showHello && <Hello />}
+
+      <br />
+      <div>{count}</div>
+      <label>square components:</label>
+      {favNums.map(n => (
+        <Square increment={increment} n={n} key={n} />
+      ))}
+      <br />
 
       <br />
       <input
@@ -25,6 +34,7 @@ const App = () => {
         name="email"
         value={values.email}
         onChange={handleChange}
+        ref={inputRef}
       />
       <input
         type="password"
@@ -33,9 +43,7 @@ const App = () => {
         onChange={handleChange}
       />
 
-      <div>count: {count}</div>
-      <button onClick={() => setCount(count => count + 1)}>increment</button>
-      <button onClick={() => setCount(0)}>reset</button>
+      <button onClick={() => inputRef.current.focus()}>focus</button>
     </div>
   );
 };
