@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
+import React from "react";
 
-import { useFetch, useMeasure, useCountRenders } from "../hooks";
+import { useCountRenders } from "../hooks";
 
 const Square = React.memo(({ increment, n }) => {
   useCountRenders();
