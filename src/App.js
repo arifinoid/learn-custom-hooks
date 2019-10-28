@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/home";
 import Memo from "./pages/memo";
 import "./App.css";
+import Todo from "./pages/todo";
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/memo" component={Memo} />
+        <Route path="/todo" component={Todo} />
       </Switch>
     </Router>
   );
